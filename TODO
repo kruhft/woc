@@ -1,0 +1,3 @@
+-- ignore whitespace sequences when word is actually multiple words.
+   this will allow for matching of words across newline boundaries and
+   with varying degrees/types of whitespace between the words.
