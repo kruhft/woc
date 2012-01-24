@@ -51,9 +51,9 @@ int count_occurances(char** words, int num_words, char* filename) {
     for(i = 0; i < size; i++) {
       if(toupper(str[i]) == *word) {
 	int j;
-	for(j = 1;  word[j] == toupper(str[i+j]) && j < wordlen; j++)
-	  if(j == wordlen) {
-	    match_count += inc;
+	for(j = 1;  word[j] == toupper(str[i+j]) && j < wordlen; j++);
+	if(j == wordlen) {
+	  match_count += inc;
 	}
       }
     }
