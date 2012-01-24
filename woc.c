@@ -9,7 +9,7 @@
 
 
 
-void count_occurances(char* word, char* filename, int invert_flag) {
+void count_occurances(char* word, char* filename) {
   FILE* file = fopen(filename, "r");
   if(!file) {
     perror("fopen: ");
@@ -24,7 +24,7 @@ void count_occurances(char* word, char* filename, int invert_flag) {
     exit(1);
   }
 
-  int i, match_count = 0, wordlen = strlen(word), inc = invert_flag ? -1 : 1;
+  int i, match_count = 0, wordlen = strlen(word);
   
   for(i = 0; i < wordlen; i++) {
     word[i] = toupper(word[i]);
@@ -34,7 +34,7 @@ void count_occurances(char* word, char* filename, int invert_flag) {
       int j;
       for(j = 1;  word[j] == toupper(str[i+j]) && j < wordlen; j++);
       if(j == wordlen) {
-	match_count += inc;
+	match_count++;
       }
     }
   }
@@ -53,7 +53,7 @@ void usage(void) {
 }
 
 int main(int argc, char **argv) {
-  int help_requested = 0, invert_flag, i;
+  int help_requested = 0, i;
   for(i = 1; i < argc; i++) {
     if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
       help_requested = 1;
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
 
   for(i = 0; i < nfiles; i++) {
     if(files[i])
-      count_occurances(word, files[i], invert_flag);
+      count_occurances(word, files[i]);
   }
   return 0;
 }
