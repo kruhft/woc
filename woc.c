@@ -58,10 +58,6 @@ int main(int argc, char **argv) {
     if(!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
       help_requested = 1;
     }
-    if(!strcmp(argv[i], "-v")) {
-      argv[i] = NULL;
-      invert_flag = 1;
-    }
   }
   
   if(argc < 3 || help_requested) {
