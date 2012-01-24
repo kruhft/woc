@@ -1,3 +1,7 @@
 -- ignore whitespace sequences when word is actually multiple words.
    this will allow for matching of words across newline boundaries and
    with varying degrees/types of whitespace between the words.
+
+-- ||ize, probably 2 or more threads per cpu as this will be i/o
+     bound, with mailbox to pass info from main thread to worker
+     threads
