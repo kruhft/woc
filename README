@@ -1,41 +1,14 @@
 woc - word occurance
 --------------------
 
-This program is designed to replace these lines of search.ksh shell
-script:
+This program is designed to count the number of occurances of a set of
+words in a set of files and produce a score listing.  It's a poor
+man's google for the unix filesystem.
 
-    for file in $storydir/*; do
-            echo $file:$(grep $invert -i -o -- "${word/-/}" $file | wc -l)
-    done
+usage: woc [words...] -- [files...]
 
-It counts the occurances how many times word occures in the given
-files.  It prints the "filename\tcount" as output.
-
-Results
--------
-
-before woc (with above lines of shell script):
-
-time ./search.ksh arc tutorial
-real   0m1.67s
-user   0m0.03s
-sys    0m0.26s
-
-after replacing above loop with woc:
-
-time ./search.ksh arc tutorial
-real   0m0.07s
-user   0m0.00s
-sys    0m0.02s
-
-Pass.
-
-Missing
--------
-
--v or invert search (how many times a word doesn't occure?).  I am
-really unsure of how this can be implemented and how grep was doing it
-in the above invocation.  Maybe I'll figure it out someday.
+Putting a '-' in front of a word will invert it's count value in the
+results.
 
 --
 Burton Samograd - 2012
