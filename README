@@ -5,10 +5,13 @@ This program is designed to count the number of occurances of a set of
 words in a set of files and produce a score listing.  It's a poor
 man's google for the unix filesystem.
 
-usage: woc [words...] -- [files...]
+usage: woc [words...] -- [files or directories...]
 
 Putting a '-' in front of a word will invert it's count value in the
 results.
+
+If a directory is specified after --, all of the files in that
+directory will be scanned.
 
 --
 Burton Samograd - 2012

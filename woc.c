@@ -1,11 +1,14 @@
 /*
  * woc - word occurance
  *
- * usage: woc [words...] -- [files...]
+ * usage: woc [words...] -- [files or directories...]
  *
  * Count the occurances of words... in files... printing the score to
  * standard out. If a word starts with '-' then reduce the count by 1
  * for each occurance of the given word.
+ *
+ * If a directory is specified after the -- then all the files in the
+ * directory are scanned.
  *
  * Author: Burton Samograd <burton.samograd@gmail.com> 2012
  * License: AGPL
@@ -15,6 +18,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -29,7 +33,7 @@ int count_occurances(char** words, int num_words, char* filename) {
   }
   fseek(file, 0, SEEK_END);
   int size = ftell(file);
-  
+
   char* str = mmap(NULL, size, PROT_READ, MAP_PRIVATE, fileno(file), 0);
   if(!str) {
     perror("mmap: ");
@@ -66,8 +70,8 @@ int count_occurances(char** words, int num_words, char* filename) {
 }
 
 void usage(void) {
-  fprintf(stderr, "usage: woc [words...] -- [files...]\n");
-  fprintf(stderr, "count the number of occurances of word(s) in file(s)\n");
+  fprintf(stderr, "usage: woc [words...] -- [files or directories...]\n");
+  fprintf(stderr, "count the number of occurances of words in files or files in directories\n");
 }
 
 int main(int argc, char **argv) {
@@ -109,9 +113,40 @@ int main(int argc, char **argv) {
 
   FILE* sortpipe = popen("sort -r -V -k1,2", "w");
   for(i = 0; i < num_files; i++) {
-    int match_count = count_occurances(words, num_words, files[i]);
-    if(match_count > 0) {
-      fprintf(sortpipe, "%d\t%s\n", match_count, files[i]);
+    int match_count;
+    /* see if a directory is specified */
+    DIR* dir = opendir(files[i]);
+    if(dir) {
+      /* we got a directory */
+      int filesilen = strlen(files[i]);
+      if(files[i][filesilen-1] == '/') {
+	/* strip off trailing / if present */
+	files[i][filesilen-1] = '\0';
+      }
+      struct dirent* entry;
+      char path[PATH_MAX];
+      while((entry = readdir(dir))) {
+	/* traverse the files in the directory */
+	struct stat buf;
+	snprintf(path, PATH_MAX, "%s/%s", files[i], entry->d_name);
+	stat(path, &buf);
+	if(S_ISDIR(buf.st_mode)) {
+	  /* skip directories */
+	  continue;
+	}
+	/* do match count */
+	match_count = count_occurances(words, num_words, path);
+	if(match_count > 0) {
+	  fprintf(sortpipe, "%d\t%s\n", match_count, path);
+	}
+      }
+      closedir(dir);
+    } else {
+      /* we have a file specified, do match count */
+      match_count = count_occurances(words, num_words, files[i]);
+      if(match_count > 0) {
+	fprintf(sortpipe, "%d\t%s\n", match_count, files[i]);
+      }
     }
   }
   fclose(sortpipe);
