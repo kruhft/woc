@@ -1,6 +1,4 @@
--- have the last paramter be a directory rather than list of files;
-   allows the removal of the -- seperator, and stops the requirement
-   for the shell to expand all of the filenames prior to invoking woc
+TODO
 
 -- ignore whitespace sequences when word is actually multiple words.
    this will allow for matching of words across newline boundaries and
@@ -10,3 +8,11 @@
      bound, with mailbox to pass info from main thread to worker
      threads
 
+
+DONE
+
+-- have the last paramter be a directory rather than list of files;
+   allows the removal of the -- seperator, and stops the requirement
+   for the shell to expand all of the filenames prior to invoking woc
+   Note: still required -- as seperator, but I don't think that is a
+   problem.
