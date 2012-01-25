@@ -1,5 +1,8 @@
 TODO
 
+-- extend scoring prefixes beyond a single -; - lowers score by 1
+   point, -- by 10 points, --- 100 points, same for +, ++, +++
+
 -- ignore whitespace sequences when word is actually multiple words.
    this will allow for matching of words across newline boundaries and
    with varying degrees/types of whitespace between the words.
