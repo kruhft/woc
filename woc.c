@@ -111,7 +111,7 @@ int main(int argc, char **argv) {
     files[i-files_start] = argv[i];
   }
 
-  FILE* sortpipe = popen("sort -r -V -k1,2", "w");
+  FILE* sortpipe = popen("sort -V -k1,2", "w");
   for(i = 0; i < num_files; i++) {
     int match_count;
     /* see if a directory is specified */
