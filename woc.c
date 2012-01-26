@@ -111,7 +111,6 @@ int main(int argc, char **argv) {
     files[i-files_start] = argv[i];
   }
 
-  FILE* sortpipe = popen("sort -V -k1,2", "w");
   for(i = 0; i < num_files; i++) {
     int match_count;
     /* see if a directory is specified */
@@ -137,7 +136,7 @@ int main(int argc, char **argv) {
 	/* do match count */
 	match_count = count_occurances(words, num_words, path);
 	if(match_count > 0) {
-	  fprintf(sortpipe, "%d\t%s\n", match_count, path);
+	  fprintf(stdout, "%d\t%s\n", match_count, path);
 	}
       }
       closedir(dir);
@@ -145,10 +144,9 @@ int main(int argc, char **argv) {
       /* we have a file specified, do match count */
       match_count = count_occurances(words, num_words, files[i]);
       if(match_count > 0) {
-	fprintf(sortpipe, "%d\t%s\n", match_count, files[i]);
+	fprintf(stdout, "%d\t%s\n", match_count, files[i]);
       }
     }
   }
-  fclose(sortpipe);
   return 0;
 }
